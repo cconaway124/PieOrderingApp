@@ -1,0 +1,64 @@
+﻿@model OrderViewModel
+
+<head>
+    <title>
+        Pies Home Page
+    </title>
+    <script defer src="~/js/site.js"></script>
+</head>
+<body>
+    <label>
+        Choose a pickup date before proceeding:
+        <input id="PickupDate" type="date" min="@Model.MinOrderableDate" onchange="CheckDates(); SetHiddenFor('PickupDate')" form="SeeCart" /> <!--Add min date to the calendar, and can't order on Weekends-->
+    </label>
+    <label for="PickupDate" id="PickupDateLabel"></label>
+
+    <div id="PieContainer" class="container" hidden>
+        <h1>
+            Select a Pie to order!
+        </h1>
+
+        <div class="container">
+            <div class="row">
+                @foreach (Pie pie in Model.Pies)
+                {
+                    <div class="col">
+
+                        <div class="card">
+                            <img class="card-img-top" src="@pie.PiePath">
+                            <div class="card-body">
+                                <h4>
+                                    @pie.PieName
+                                </h4>
+
+                                <p>
+                                    @pie.PieDescription
+                                </p>
+                                <label>
+                                    $@pie.PiePrice
+                                </label>
+                            </div>
+                            <button type="button" onclick="UpdateCart(@pie.PieId, 1);">Add to order</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <form method="post" action="/Cart/Index" id="SeeCart">
+                @Html.HiddenFor(model => model.SelectedPiesIds, new { Value = Model.SelectedPiesIds, id = "HiddenPiesInCart" })
+                @Html.HiddenFor(model => model.FirstName, new { Value = Model.FirstName, id = "HiddenfName"})
+                @Html.HiddenFor(model => model.LastName, new { Value = Model.LastName, id = "HiddenlName"})
+                @Html.HiddenFor(model => model.PhoneNumber, new { Value = Model.PhoneNumber, id = "HiddenphoneNumber"})
+                @Html.HiddenFor(model => model.Email, new { Value = Model.Email, id = "Hiddenemail"})
+                @Html.HiddenFor(model => model.CCName, new { Value = Model.CCName, id = "HiddencardName"})
+                @Html.HiddenFor(model => model.CCNumber, new { Value = Model.CCNumber, id = "HiddencardNumber"})
+                @Html.HiddenFor(model => model.CVV, new { Value = Model.CVV, id = "HiddenCVV"})
+                @Html.HiddenFor(model => model.ZipCode, new { Value = Model.ZipCode, id = "HiddenZipCode"})
+                @Html.HiddenFor(model => model.PickupDate, new { Value = Model.PickupDate, id = "HiddenPickupDate" })
+                @Html.HiddenFor(model => model.OrderDate, new { Value = Model.OrderDate, id = "HiddenOrderDate" })
+
+            </form>
+        </div>
+        <input type="submit" form="SeeCart" value="See your cart" />
+    </div>
+
+</body>

@@ -1,0 +1,52 @@
+﻿@model OrderViewModel
+
+<div class="container">
+    <h1>
+        Thanks for ordering! Your pie will be available @Model.PickupDate!
+        Track it <a href="https://www.noradsanta.org/en/">here.</a>
+    </h1>
+    <div class="row">
+        Order Summary:
+    </div>
+    @foreach (KeyValuePair<int, int> entry in Model.PieCounts)
+    {
+        Pie currPie = Model.Pies.FirstOrDefault(p => p.PieId == entry.Key) ?? new Pie();
+        <div class="row">
+            <div class="card widecard">
+                <img class="card-img-top special-card" src="@currPie.PiePath" />
+                <div class="card-body">
+                    <div class="row">
+                        @currPie.PieName
+                    </div>
+                    <p>
+                        @currPie.PieDescription
+                    </p>
+                    <div class="row">
+                        Quantity: @entry.Value
+                    </div>
+                    <div class="row">
+                        Price per pie: $@currPie.PiePrice
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        Total: $@Model.TotalPrice
+    </div>
+    <div class="row">
+        Order ID: @Model.OrderId
+    </div>
+    <div class="row">
+        PickupDate: @Model.PickupDate
+    </div>
+    <div class="row">
+        Name: @Model.FirstName @Model.LastName
+    </div>
+    <div class="row">
+        Phone number: @Model.PhoneNumber
+    </div>
+    <div class="row">
+        Email: @Model.Email
+    </div>
+</div>

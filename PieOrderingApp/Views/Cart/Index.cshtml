@@ -1,0 +1,80 @@
+﻿@model OrderViewModel
+
+<div class="container">
+    <div class="column">
+        @foreach (KeyValuePair<int, int> entry in Model.PieCounts) {
+            Pie currPie = Model.Pies.FirstOrDefault(p => p.PieId == entry.Key) ?? new Pie();
+            <div class="row">
+                <div class="card widecard">
+                    <img class="card-img-top special-card" src="@currPie.PiePath" />
+                    <div class="card-body">
+                        <div class="row">
+                            @currPie.PieName
+                        </div>
+                        <p>
+                            @currPie.PieDescription
+                        </p>
+                        <div class="row">
+                            Quantity: @entry.Value
+                        </div>
+                        <div class="row">
+                            Price per pie: $@currPie.PiePrice
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            Total: $@Model.TotalPrice
+        </div>
+    </div>
+    <div class="column">
+        <form method="post" action="/Confirmation/Index" name="ConfirmOrder">
+            <!--The naming convention for setting the hidden fields is whatever the id is for the nonhidden input field
+                For the hidden fields, it is Hidden + the id of an input (i.e., the regular input is fName, and the hidden input is HiddenfName)
+            -->
+            <div class="row">
+                <input type="text" id="fName" placeholder="First name" onblur="SetHiddenFor('fName')" required />
+            </div>
+            <div class="row">
+                <input type="text" id="lName" placeholder="Last name" onblur="SetHiddenFor('lName')" required />
+            </div>
+            <div class="row">
+                <input type="number" id="phoneNumber" placeholder="Phone Number" onblur="SetHiddenFor('phoneNumber')" required />
+            </div>
+            <div class="row">
+                <input type="text" id="email" placeholder="Email" onblur="SetHiddenFor('email')" required />
+            </div>
+            <div class="row">
+                <input type="text" id="cardName" placeholder="Name on the card" onblur="SetHiddenFor('cardName')" required />
+            </div>
+            <div class="row">
+                <input type="number" id="cardNumber" placeholder="Card number" onblur="SetHiddenFor('cardNumber')" required />
+            </div>
+            <div class="row">
+                <input type="number" id="CVV" placeholder="CVV" onblur="SetHiddenFor('CVV')" required />
+            </div>
+            <div class="row">
+                <input type="number" id="ZipCode" placeholder="Zip Code" onblur="SetHiddenFor('ZipCode')" required />
+            </div>
+            <div class="row">
+                <input type="submit" id="submitConfirm" value="Checkout" onblur="SetHiddenFor('fName')" required />
+            </div>
+            
+            @Html.HiddenFor(model => model.FirstName, new { Value = Model.FirstName, id = "HiddenfName"})
+            @Html.HiddenFor(model => model.LastName, new { Value = Model.LastName, id = "HiddenlName"})
+            @Html.HiddenFor(model => model.PhoneNumber, new { Value = Model.PhoneNumber, id = "HiddenphoneNumber"})
+            @Html.HiddenFor(model => model.Email, new { Value = Model.Email, id = "Hiddenemail"})
+            @Html.HiddenFor(model => model.CCName, new { Value = Model.CCName, id = "HiddencardName"})
+            @Html.HiddenFor(model => model.CCNumber, new { Value = Model.CCNumber, id = "HiddencardNumber"})
+            @Html.HiddenFor(model => model.CVV, new { Value = Model.CVV, id = "HiddenCVV"})
+            @Html.HiddenFor(model => model.ZipCode, new { Value = Model.ZipCode, id = "HiddenZipCode"})
+            @Html.HiddenFor(model => model.PickupDate, new { Value = Model.PickupDate })
+            @Html.HiddenFor(model => model.OrderDate, new { Value = Model.OrderDate })
+            @Html.HiddenFor(model => model.PieCounts, new { Value = Model.PieCounts })
+            @Html.HiddenFor(model => model.Pies, new { Value = Model.Pies })
+            @Html.HiddenFor(model => model.TotalPrice, new { Value = Model.TotalPrice })
+            @Html.HiddenFor(model => model.SelectedPiesIds, new { Value = Model.SelectedPiesIds})
+        </form>
+    </div>
+</div>
